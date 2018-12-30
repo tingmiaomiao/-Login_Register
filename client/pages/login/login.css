@@ -1,0 +1,80 @@
+.wrap{
+    
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    margin: 0;
+
+}
+.content{
+    position: relative;
+    width: 305px;
+    padding: 0;
+    height: 200px;
+    margin: auto;
+    color: #6c6c6c;
+    font-size: 14px;
+    /* text-align: center; */
+    /* background: #b2b2b2; */
+
+}
+.filed{
+    position: relative;
+    margin-top: 25px;
+}
+.filed label{
+    display: block;
+    width: 60px;
+    height: 40px;
+    line-height: 40px;
+    background: #ddd;
+    text-align: center;
+    position: absolute;
+
+}
+.filed .login-text{
+    width: 240px;
+    font-size: 14px;
+    line-height: 18px;
+    height: 39px;
+    padding: 11px 8px 11px 8px;
+    margin-left: 60px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+.filed .label-text{
+    position: absolute;
+    line-height: 42px;
+    height: 42px;
+    color: #999;
+    opacity: 1;
+    left: 50px;
+    top: 0;
+    font-size: 14px;
+}
+ .submit-text{
+    width: 301px;
+    height: 42px;
+    line-height: 42px;
+    margin-top: 25px;
+    background: #ff0036;
+    
+}
+
+.register{
+    text-align: right;
+    margin-top: 10px;
+    overflow: hidden;
+}
+    
+.register a{
+
+    font-size: 11px;
+    text-decoration: none;
+    color: #000;
+    margin-right: 10px;
+    color: #6c6c6c;
+}
+/* .register .register-text{
+    
+} */

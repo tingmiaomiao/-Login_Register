@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首页</title>
+    <script src="http://localhost:8001/jquery-3.3.1.min.js"></script>
+    <script src="http://localhost:8001/jquery/jquery.cookie.js"></script>
+</head>
+<body>
+    <div>
+        <h1 id="username"></h1>
+        <h1 id="password"></h1>
+    </div>
+</body>
+<script>
+    window.onload=function(){
+        var username = $.cookie("username");
+        var password = $.cookie("password");
+        var userInfo ={
+            username:username,
+            password: password
+        };
+        var node1 = document.getElementById('username');
+        node1.innerHTML = username;
+        var node2 = document.getElementById('password');
+        node2.innerHTML = password;
+        console.log(userInfo)
+     
+    }
+</script>
+</html>

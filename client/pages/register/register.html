@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册页</title>
+    <link rel="stylesheet" href="./register.css">
+    <script src="http://localhost:8001/constant.js"></script>
+    <script src="http://localhost:8001/httpRequest/httpCallback.js"></script>
+    <script src="http://localhost:8001/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <div class="content">
+            <h1>用户注册</h1>
+            <div class="filed userName-filed">
+                <label for="userName" title="会员名">用户名</label>
+                    <input type="text" name="userName" id="userName" class="login-text" maxlength="20">
+                    <span class="notice" id="nameForget" style="display: none">请输入用户名</span>
+                    <span class="notice" id="usernameExit" style="display: none">用户名已存在</span> 
+            </div>
+            <div class="filed password-filed">  
+                    <label for="password" title="密码">密码</label>  
+                    <input type="password" name="password" id="password-input" class="login-text" maxlength="10">  
+                    <span class="notice" id="passwordForget" style="display: none">请输入密码</span>               
+             </div>  
+             <div class="filed password-filed">  
+                    <label for="password" title="密码">确认密码</label>  
+                    <input type="password" name="password" id="password-commit" class="login-text" maxlength="10">
+                    <span class="notice" id="passworddiff" style="display: none">两次输入的密码不同</span>                
+             </div>  
+            <div class="button ">
+                <input type="button" id="submit"  class="submit-text" value="提交" >
+            </div>   
+        </div>
+    </div> 
+</body>
+<script>
+    const {PATH} = constant;
+    var node = document.getElementById('submit');
+    var http = new Http();
+    var nameNode = document.getElementById('userName');
+    var passwordNode = document.getElementById('password-input');
+    var usernoticeNode = document.getElementById('nameForget');
+    var passwordoticeNode = document.getElementById('passwordForget');
+    var usernameExitNode = document.getElementById('usernameExit')
+    var passwordCommitNode =  document.getElementById('password-commit');
+    var passworddiffNode = document.getElementById('passworddiff');
+    
+    // 节流函数
+    function throttle(fn,context,delay,text){
+            clearTimeout(fn.timeoutId);
+            fn.timeoutId = setTimeout(function(){
+                // console.log('pp',nameNode.value)
+                fn.call(context,text);
+            },delay);
+    }
+
+    // 判断用户名是否已经存在
+    function queryUser(){
+        var name = nameNode.value;
+        let info = {
+            username:name,
+        }
+        http.get(PATH+'/search',info,function(err,result){
+            if(err){
+                console.log(err)
+                return
+            }
+            if(result.status.code == 1){
+                // console.log('111',result.status.code)
+                usernameExitNode.style.display = "inline";
+            }else{
+                usernameExitNode.style.display = "none";
+            }
+      
+        })
+    }
+
+    // 判断两次密码输入是否相同
+    function diffPassword(){
+        var password = passwordNode.value;
+        var passwordCommit = passwordCommitNode.value;
+        if(password != passwordCommit){
+            passworddiffNode.style.display = "inline";
+        }else{
+            passworddiffNode.style.display = "none";
+        }
+       
+    }
+      
+    // 监听用户名输入
+    nameNode.addEventListener('keyup',function(event){
+        throttle(queryUser, null, 500, this.value);
+
+    })
+
+    // 监听密码输入
+    passwordCommitNode.addEventListener('keyup',function(event){      
+        throttle(diffPassword, null, 500, this.value);
+
+    })
+    // 提交事件
+    node.addEventListener('click',function(){
+        var name = nameNode.value;
+        var password = passwordNode.value;
+        var usernotice =usernoticeNode.value;
+        var passwordotice = passwordoticeNode.value;
+        var passwordCommit = passwordCommitNode.value; 
+        var passworddiff = passworddiffNode.value;
+        if(!name){
+            usernoticeNode.style.display = "inline";
+        }else{
+            usernoticeNode.style.display = "none";
+        }
+        if(!password){
+            passwordoticeNode.style.display = "inline";
+        }else{
+            passwordoticeNode.style.display = "none";
+        }
+        if( name && password && (password == passwordCommit)){
+            var info={
+                username:name,
+                password:password
+            }
+            http.get(PATH+'/add',info,function(err,result){
+            if(err){
+                console.log(err)
+                return
+            }
+            alert("注册成功，1s后跳转登录页面")
+            setTimeout(function(){
+                location.href = PATH + "/pages/login/login.html"
+            },1000);
+        })
+        }
+        
+        
+    })
+    
+    </script>
+</html>
