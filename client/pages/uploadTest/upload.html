@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图片上传</title>
+    <link rel="stylesheet" href="http://localhost:8001/pages/uploadTest/upload.css">
+    <script src="http://localhost:8001/jquery-3.3.1.min.js"></script>
+    <script src="http://localhost:8001/jquery.form.js"></script>
+</head>
+<body>
+    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" onsubmit="return false;">
+        <input type="file" name="imageChoose" id="imageChoose" multiple/>
+        <input type="submit" value="Upload" id="submit" name="submit">
+    </form> 
+    <div class="wrap">
+            <img id="imageSrc" src="" alt="">
+    </div>
+    
+</body>
+<script type="text/javascript">
+    var imgNode = document.getElementById('imageChoose');
+    var submitNode = document.getElementById('submit');
+    imgNode.addEventListener('change',function(){
+        var e = event||window.event;
+        var file = e.target.files[0];
+        var suffixName = file.type.split("/").pop().toLowerCase();
+        if(!(suffixName=="png"||suffixName=="jpg"||suffixName=="jpeg")){
+            alert("图片仅能上传png、jpg、jpeg等图像格式");
+        }
+        // console.log(file);
+    })
+    submitNode.addEventListener('click',function(){
+        $('#uploadForm').ajaxSubmit(function(data){
+            console.log('result.result', data)
+            var imgSrc = document.getElementById('imageSrc');
+            // console.log(err)
+            imageSrc.src = data.result.filename;
+
+        })
+
+    })
+</script>
+</html>

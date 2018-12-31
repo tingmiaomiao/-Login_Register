@@ -1,11 +1,10 @@
 'use strict';
 const fs = require('fs');
-//import { successRes, errorRes } from '../util/res.js'
+const path = require('path');
 const Res = require('../util/res.js');
 const { successRes, errorRes } = Res;
-const { USER_TABLE } = require('../constants/constant.js');
-
-const EMPTY = ''
+const { USER_TABLE,PATH } = require('../constants/constant.js');
+console.log('PATH',PATH)
 const Database = require('../model/contactDB.js');
 const DB = new Database('./server/model/data.json');
 DB.startDatabase(function(){
@@ -124,9 +123,26 @@ async function search(ctx, next){
   }
 }
 
+async function upload(ctx, next){
+  try{
+    const file = ctx.request.files.imageChoose;//读取上传文件
+    const reader = fs.createReadStream(file.path);//创建可读流
+    const suffixName = file.name.split('.').pop();
+    const filename = `img-${Date.now()}.${suffixName}`;//编辑图片名
+    const filepath = path.join(__dirname,'../../client/static/images')+`/${filename}`;
+    const upStream = fs.createWriteStream(filepath);
+    reader.pipe(upStream);
+    return ctx.body = successRes({filename:`${PATH}/static/images/${filename}`});
+  }catch(err){
+    console.log(err);
+    return ctx.body = errorRes('上传图片出错', `${err}`)
+  }
+
+}
 module.exports = {
   add: add,
   del: del,
   update: update,
-  search: search
+  search: search,
+  upload: upload
 };
